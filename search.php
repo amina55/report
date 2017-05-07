@@ -21,11 +21,11 @@ $currentYear = date('Y');
             <div class="form-group">
                 <div class="col-sm-12">
                     <div class="col-sm-5">
-                        <input placeholder="Chose Start Year" class="form-control" type="number" name="start_year" min="1956" max="<?php echo $currentYear; ?>" required>
+                        <input placeholder="Chose Start Year" class="form-control" type="number" name="start_year" min="1898" max="<?php echo $currentYear; ?>" required>
                     </div>
 
                     <div class="col-sm-5">
-                        <input placeholder="Chose End Year" class="form-control" type="number" name="end_year" min="1956" max="<?php echo $currentYear; ?>">
+                        <input placeholder="Chose End Year" class="form-control" type="number" name="end_year" min="1898" max="<?php echo $currentYear; ?>">
                     </div>
 
                     <div class="col-sm-2">

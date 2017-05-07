@@ -36,16 +36,16 @@ try {
 
                 <div class="form-group col-sm-12">
                     <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Case No.
+                        CINO
                     </label>
                     <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['case_no'] ?>
+                        <?php echo $record['cino'] ?>
                     </label>
                 </div>
 
                 <div class="form-group col-sm-12">
                     <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Fill No.
+                        Case No.
                     </label>
                     <label class="col-sm-8 col-xs-12 text-left bold">
                         <?php echo $record['fil_no'] ?>
@@ -54,12 +54,31 @@ try {
 
                 <div class="form-group col-sm-12">
                     <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Fill Year
+                        Filling No.
+                    </label>
+                    <label class="col-sm-8 col-xs-12 text-left bold">
+                        <?php echo $record['filing_no'] ?>
+                    </label>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-4 col-xs-12 control-label text-right">
+                        Filling Year
                     </label>
                     <label class="col-sm-8 col-xs-12 text-left bold">
                         <?php echo $record['fil_year'] ?>
                     </label>
                 </div>
+
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-4 col-xs-12 control-label text-right">
+                        Filling Date
+                    </label>
+                    <label class="col-sm-8 col-xs-12 text-left bold">
+                        <?php echo $record['date_of_filing'] ?>
+                    </label>
+                </div>
+
 
                 <div class="form-group col-sm-12">
                     <label class="col-sm-4 col-xs-12 control-label text-right">

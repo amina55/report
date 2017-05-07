@@ -1,7 +1,7 @@
 <?php
 
-$dbuser = 'Mac';
-$dbpass = 'root';
+$dbuser = 'postgres';
+$dbpass = 'test123';
 $dbhost = 'localhost';
 $dbname='srinagarhc';
 
