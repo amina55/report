@@ -1,8 +1,6 @@
 <?php
 session_start();
 $message = '';
-$currentYear = date('d-m-Y');
-
 include "database_access.php";
 if (!$connection) {
     $message = "Connection Failed.";

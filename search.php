@@ -1,5 +1,7 @@
 <?php
-include  "master.php"; ?>
+include  "master.php";
+$currentYear = date('Y');
+?>
 
     <!------------------------------ Page Header -------------------------------->
     <div class="box-header">
