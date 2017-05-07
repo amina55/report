@@ -5,7 +5,7 @@ try {
         $message = "Connection Failed.";
     } else {
         $id = $_GET['id'];
-        $query = "select * from civil_t where case_no = '$id'";
+        $query = "select * from civil_t where cino = '$id'";
         $statement = $connection->prepare($query);
         $statement->execute();
         $record = $statement->fetch();

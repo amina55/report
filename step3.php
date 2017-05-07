@@ -35,7 +35,7 @@ include "search.php"; ?>
                     <td><?php echo $caseDetail['fil_no'] ?></td>
 
                     <td>
-                        <a href="view-detail.php?id=<?php echo $caseDetail['case_no']; ?>" class="no-text-decoration" title="View Detail of Record">
+                        <a href="view-detail.php?id=<?php echo $caseDetail['cino']; ?>" class="no-text-decoration" title="View Detail of Record">
                             View Detail
                         </a>
                     </td>
