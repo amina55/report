@@ -34,86 +34,100 @@ try {
 
             <?php  if(!empty($record)) { ?>
 
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        CINO
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['cino'] ?>
-                    </label>
-                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#home">Basic Info</a></li>
+                    <li><a data-toggle="tab" href="#pet_info">Petitioner Info</a></li>
+                    <li><a data-toggle="tab" href="#res_info">Respondent Info</a></li>
+                </ul>
 
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Case No.
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['fil_no'] ?>
-                    </label>
-                </div>
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <br><br>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                CINO
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['cino'] ?>
+                            </label>
+                        </div>
 
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Filling No.
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['filing_no'] ?>
-                    </label>
-                </div>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Case No.
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['fil_no'] ?>
+                            </label>
+                        </div>
 
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Filling Year
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['fil_year'] ?>
-                    </label>
-                </div>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Filling No.
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['filing_no'] ?>
+                            </label>
+                        </div>
 
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Filling Date
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['date_of_filing'] ?>
-                    </label>
-                </div>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Filling Year
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['fil_year'] ?>
+                            </label>
+                        </div>
 
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Filling Date
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['date_of_filing'] ?>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="pet_info" class="tab-pane fade">
+                        <br><br>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Petitioner name
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['pet_name'] ?>
+                            </label>
+                        </div>
 
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Petitioner name
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['pet_name'] ?>
-                    </label>
-                </div>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Petitioner Advocate
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo  $record['pet_adv']?>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="res_info" class="tab-pane fade">
+                        <br><br>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Respondent name
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['res_name'] ?>
+                            </label>
+                        </div>
 
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Petitioner Advocate
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo  $record['pet_adv']?>
-                    </label>
-                </div>
-
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Respondent name
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['res_name'] ?>
-                    </label>
-                </div>
-
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-4 col-xs-12 control-label text-right">
-                        Respondent Advocate
-                    </label>
-                    <label class="col-sm-8 col-xs-12 text-left bold">
-                        <?php echo $record['res_adv'] ?>
-                    </label>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Respondent Advocate
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $record['res_adv'] ?>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             <?php }?>
         </div>

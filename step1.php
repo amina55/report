@@ -1,31 +1,44 @@
 <?php
 session_start();
-$message = '';
+$message = $query = '';
 include "database_access.php";
 if (!$connection) {
     $message = "Connection Failed.";
 } else {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $startYear = trim($_POST['start_year']);
-        $endYear = trim($_POST['end_year']);
+        $selector = trim($_POST['selector']);
 
-        if (!$startYear) {
-            $message = 'Please choose Start Year for viewing report';
-        } elseif ($startYear && !$endYear) {
-            $query = " fil_year = '$startYear' ";
-        } elseif ($startYear && $endYear) {
-            if ($startYear > $endYear) {
-                $message = "Start Year should be less than End Year.";
+        if(!$selector) {
+            $message = "Please choose a option";
+        } elseif ($selector == 'full_data') {
+            $query = "true";
+        } elseif ($selector == 'year') {
+            $startYear = trim($_POST['specific_year']);
+            if(!$startYear) {
+                $message = "Choose a Specific Year";
             } else {
-                $str = '';
-                for ($i = $startYear; $i <= $endYear; $i++) {
-                    $str .= " '$i',";
-                }
-                $str = rtrim($str, ',');
-                $query = " fil_year in ($str) ";
+                $query = " fil_year = '$startYear'";
             }
+        } elseif ($selector == 'range') {
+            $startYear = trim($_POST['start_year']);
+            $endYear = trim($_POST['end_year']);
+           if ($startYear && $endYear) {
+                if ($startYear > $endYear) {
+                    $message = "Start Year should be less than End Year.";
+                } else {
+                    $str = '';
+                    for ($i = $startYear; $i <= $endYear; $i++) {
+                        $str .= " '$i',";
+                    }
+                    $str = rtrim($str, ',');
+                    $query = " fil_year in ($str) ";
+                }
+           } else {
+               $message = 'Please choose Start and End Year for viewing report';
+           }
         }
+
         if ($query) {
             $_SESSION['step1'] = $query;
             $query = "select count(cino) as total_count from civil_t where " . $query;
@@ -46,18 +59,28 @@ if (!$connection) {
                     $_SESSION['criminal_case_ids'] = $criminalCaseIds;
                 }
 
-
                 $query = $_SESSION['step1'] . " and filcase_type in ($criminalCaseIds) ";
-                $query = "select count(cino) as criminal_count from civil_t where " . $query;
+                $query = "select count(cino) as count, sum(case when purpose_today = 2 then 1 else 0 end) admission, ".
+                    " sum(case when purpose_today = 4 then 1 else 0 end) orders, sum(case when purpose_today = 8 then 1 else 0 end) hearing ".
+                    "from civil_t where " . $query;
                 $statement = $connection->prepare($query);
                 $statement->execute();
                 $criminalReport = $statement->fetch();
 
                 $query = $_SESSION['step1'] . " and filcase_type not in ($criminalCaseIds) ";
-                $query = "select count(cino) as civil_count from civil_t where " . $query;
+                $query = "select count(cino) as count, sum(case when purpose_today = 2 then 1 else 0 end) admission, ".
+                    " sum(case when purpose_today = 4 then 1 else 0 end) orders, sum(case when purpose_today = 8 then 1 else 0 end) hearing ".
+                    "from civil_t where " . $query;
                 $statement = $connection->prepare($query);
                 $statement->execute();
                 $civilReport = $statement->fetch();
+
+                $query = "select count(cino) as count, sum(case when purpose_today = 2 then 1 else 0 end) admission, ".
+                    " sum(case when purpose_today = 4 then 1 else 0 end) orders, sum(case when purpose_today = 8 then 1 else 0 end) hearing ".
+                    "from civil_t where " . $_SESSION['step1'];
+                $statement = $connection->prepare($query);
+                $statement->execute();
+                $reports = $statement->fetch();
             }
         }
     }
@@ -65,41 +88,71 @@ if (!$connection) {
 
 include  "search.php"; ?>
 
-    <?php if (!empty($reports)) { ?>
-    <div class="col-sm-12">
-        <label class="col-sm-3 bold pull-left"> Total Records </label>
-        <div class="col-sm-3 pull-left">
-            <?php echo $reports['total_count']?>
-        </div>
+    <?php if (!empty($criminalReport)) { ?>
 
-    </div><br><br><br><br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Criminal</th>
+            <th>Admission</th>
+            <th>Orders</th>
+            <th>Hearing</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><?php echo ($criminalReport['count'] > 0) ? "<a href='step2.php?type=criminal'>".$criminalReport['count']."</a>" : $criminalReport['count']?></td>
+            <td><?php echo ($criminalReport['admission'] > 0) ? "<a href='step2.php?type=criminal&purpose=admission'>".$criminalReport['admission']."</a>" : $criminalReport['admission']?></td>
+            <td><?php echo ($criminalReport['orders'] > 0) ? "<a href='step2.php?type=criminal&purpose=orders'>".$criminalReport['orders']."</a>" : $criminalReport['orders']?></td>
+            <td><?php echo ($criminalReport['hearing'] > 0) ? "<a href='step2.php?type=criminal&purpose=hearing'>".$criminalReport['hearing']."</a>" : $criminalReport['hearing']?></td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
     <?php }
 
-
-
-    if (!empty($criminalReport)) { ?>
-    <div class="col-sm-12">
-
-        <label class="col-sm-3 bold pull-left"> Criminal Records </label>
-        <div class="col-sm-3 pull-left">
-            <?php echo ($criminalReport['criminal_count'] > 0) ? "<a href='step2.php?type=criminal'>".$criminalReport['criminal_count']."</a>" : $criminalReport['criminal_count']?>
-        </div>
-    </div><br><br>
+    if (!empty($civilReport)) { ?>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Civil</th>
+                <th>Admission</th>
+                <th>Orders</th>
+                <th>Hearing</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><?php echo ($civilReport['count'] > 0) ? "<a href='step2.php?type=civil'>".$civilReport['count']."</a>" : $civilReport['count']?></td>
+                <td><?php echo ($civilReport['admission'] > 0) ? "<a href='step2.php?type=civil&purpose=admission'>".$civilReport['admission']."</a>" : $civilReport['admission']?></td>
+                <td><?php echo ($civilReport['orders'] > 0) ? "<a href='step2.php?type=civil&purpose=orders'>".$civilReport['orders']."</a>" : $civilReport['orders']?></td>
+                <td><?php echo ($civilReport['hearing'] > 0) ? "<a href='step2.php?type=civil&purpose=hearing'>".$civilReport['hearing']."</a>" : $civilReport['hearing']?></td>
+            </tr>
+            </tbody>
+        </table>
+        <br><br>
     <?php }
 
-    if (!empty($civilReport)) {
-        $civilCount = $civilReport['civil_count']?>
-    <div class="col-sm-12">
+    if (!empty($reports)) { ?>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Total</th>
+                <th>Admission</th>
+                <th>Orders</th>
+                <th>Hearing</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><?php echo  $reports['count']?></td>
+                <td><?php echo  $reports['admission']?></td>
+                <td><?php echo  $reports['orders']?></td>
+                <td><?php echo  $reports['hearing']?></td>
+            </tr>
+            </tbody>
+        </table>
+        <br><br>
+<?php }
 
-        <label class="col-sm-3 bold pull-left"> Civil Records </label>
-        <div class="col-sm-3 pull-left">
-            <?php echo ($civilCount > 0) ? "<a href='step2.php?type=civil'>".$civilCount."</a>" : $civilCount?>
-        </div>
-    </div><br><br>
-    <?php } ?>
-
-
-
-
-<?php
 include "footer.php"; ?>

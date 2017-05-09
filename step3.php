@@ -5,9 +5,23 @@ if (!$connection) {
     $message = "Connection Failed.";
 } else {
     $caseId = $_GET['case_id'];
-
-    $query = $_SESSION['step1']. " and filcase_type = $caseId ";
-    $query = "select case_no, cino, fil_no, fil_year  from civil_t where $query";
+    $purposeType = !empty($_GET['purpose']) ? $_GET['purpose'] : '';
+    switch ($purposeType) {
+        case 'admission' :
+            $purposeId = 2;
+            break;
+        case 'orders' :
+            $purposeId = 4;
+            break;
+        case 'hearing' :
+            $purposeId = 8;
+            break;
+        default :
+            $purposeId = 0;
+    }
+    $queryCondition = $_SESSION['step1']. " and filcase_type = $caseId ";
+    $queryCondition .= ($purposeType) ? " and purpose_today = $purposeId " : '';
+    $query = "select case_no, cino, fil_no, fil_year  from civil_t where $queryCondition";
     $statement = $connection->prepare($query);
     $statement->execute();
     $caseReports = $statement->fetchAll();
