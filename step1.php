@@ -37,6 +37,29 @@ if (!$connection) {
            } else {
                $message = 'Please choose Start and End Year for viewing report';
            }
+        } elseif ($selector == 'specific_status') {
+            $caseType = trim($_POST['case_type_selector']);
+            $caseTypeId = trim($_POST[$caseType.'_case_types']);
+            $orderYear = trim($_POST['order_year']);
+            $orderId = trim($_POST['order_id']);
+
+            if(empty($caseType) || empty($caseTypeId) || empty($orderYear) || empty($orderId)) {
+                $message = "Required Parameter is missing.";
+            } else {
+                $orderQuery = "select * from civil_t where fil_year = $orderYear and filcase_type = $caseTypeId and fil_no = $orderId";
+                $statement = $connection->prepare($orderQuery);
+                $statement->execute();
+                $orderDetail = $statement->fetch();
+                if(empty($orderDetail)) {
+                    $message = "There is no record of this Order.";
+                } else {
+                    if(in_array($orderDetail['purpose_today'], [2,4,8])) {
+                        header('Location:view-detail.php?id='.$orderDetail['cino']);
+                    } else {
+                        $message = "This Order is not in admission, orders and hearing category.";
+                    }
+                }
+            }
         }
 
         if ($query) {
@@ -174,5 +197,10 @@ include  "search.php"; ?>
     </script>
     <br><br>
 <?php }
+
+
+if(!empty($orderDetail)) {
+
+}
 
 include "footer.php"; ?>

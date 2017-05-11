@@ -9,6 +9,10 @@ try {
         $statement = $connection->prepare($query);
         $statement->execute();
         $record = $statement->fetch();
+        $caseTypeQuery = "select type_name, case_type from case_type_t where case_type = ".$record['filcase_type'];
+        $statement = $connection->prepare($caseTypeQuery);
+        $statement->execute();
+        $caseType = $statement->fetch();
     }
     include "master.php";
 } catch (Exception $ex) {
@@ -85,6 +89,31 @@ try {
                             </label>
                             <label class="col-sm-8 col-xs-12 text-left bold">
                                 <?php echo $record['date_of_filing'] ?>
+                            </label>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Case Type
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php echo $caseType['type_name'] ?>
+                            </label>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-2 col-xs-12 control-label text-right">
+                                Purpose Type
+                            </label>
+                            <label class="col-sm-8 col-xs-12 text-left bold">
+                                <?php switch ($record['purpose_today']) {
+                                    case 2 :
+                                        echo "Admission"; break;
+                                    case 4 :
+                                        echo "Order"; break;
+                                    case 8 :
+                                        echo "Hearing"; break;
+                                    default :
+                                        echo "Other";
+                                } ?>
                             </label>
                         </div>
                     </div>
