@@ -49,7 +49,12 @@ if (!$connection) {
 
 include "search.php";
 
-if (!empty($caseReports)) { ?>
+if (!empty($caseReports)) {
+    $graphValues = [];
+    $graphLabels = [];
+    $totalCount = $admTotal = $orderTotal = $hearingTotal = 0;
+
+    ?>
 
 
     <table class="table">
@@ -70,12 +75,20 @@ if (!empty($caseReports)) { ?>
         <?php foreach ($caseReports as $caseReport) {
             $caseId = $caseReport['filcase_type'];
             $caseCount = $caseReport['count'];
+            $graphValues[] = $caseCount;
+            $graphLabels[] = $caseReport['type_name'];
+            $totalCount += $caseCount;
             ?>
 
         <tr>
             <td><?php echo $caseReport['type_name']; ?></td>
             <td><?php echo ($caseCount > 0) ? "<a href='step3.php?case_id=".$caseId."&purpose=$purposeType'>" . $caseCount . "</a>" : $caseCount ?></td>
-            <?php if(!$purposeId) { ?>
+            <?php if(!$purposeId) {
+                $admTotal += $caseReport['admission'];
+                $orderTotal += $caseReport['orders'];
+                $hearingTotal += $caseReport['hearing'];
+
+                ?>
                 <td><?php echo ($caseReport['admission']  > 0) ? "<a href='step3.php?case_id=".$caseId. "&purpose=admission'>" . $caseReport['admission']  . "</a>" : $caseReport['admission']  ?></td>
                 <td><?php echo ($caseReport['orders']  > 0) ? "<a href='step3.php?case_id=".$caseId. "&purpose=orders'>" . $caseReport['orders']  . "</a>" : $caseReport['orders']  ?></td>
                 <td><?php echo ($caseReport['hearing']  > 0) ? "<a href='step3.php?case_id=".$caseId. "&purpose=hearing'>" . $caseReport['hearing']  . "</a>" : $caseReport['hearing']  ?></td>
@@ -83,8 +96,40 @@ if (!empty($caseReports)) { ?>
 
         </tr>
         <?php } ?>
+
+        <tr>
+            <td>Total</td>
+            <td><?php echo $totalCount ?></td>
+            <?php if(!$purposeId) { ?>
+                <td><?php echo $admTotal ?></td>
+                <td><?php echo $orderTotal ?></td>
+                <td><?php echo $hearingTotal ?></td>
+            <?php } ?>
+        </tr>
         </tbody>
     </table>
+    <br><br>
+
+    <div class="col-sm-12">
+
+            <h3>Case Type Graph</h3>
+            <div id="caseTypeGraph" style="width: 1000px; height: 380px;"></div>
+    </div>
+
+    <script>
+        var data = [{
+            y: <?php echo json_encode($graphValues);?>,
+            x: <?php echo json_encode($graphLabels);?>,
+            type: 'bar'
+        }];
+
+        console.log(data);
+        var layout = {
+            height: 380,
+            width: 1000
+        };
+        Plotly.newPlot('caseTypeGraph', data, layout);
+    </script>
 
 <?php }
 include "footer.php"?>

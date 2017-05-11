@@ -88,71 +88,91 @@ if (!$connection) {
 
 include  "search.php"; ?>
 
-    <?php if (!empty($criminalReport)) { ?>
+    <?php if (!empty($reports)) { ?>
 
     <table class="table">
         <thead>
         <tr>
-            <th>Criminal</th>
+            <th>Type</th>
+            <th>Total</th>
             <th>Admission</th>
             <th>Orders</th>
             <th>Hearing</th>
         </tr>
         </thead>
         <tbody>
+        <?php if (!empty($criminalReport)) { ?>
+
         <tr>
+            <td>Criminal</td>
             <td><?php echo ($criminalReport['count'] > 0) ? "<a href='step2.php?type=criminal'>".$criminalReport['count']."</a>" : $criminalReport['count']?></td>
             <td><?php echo ($criminalReport['admission'] > 0) ? "<a href='step2.php?type=criminal&purpose=admission'>".$criminalReport['admission']."</a>" : $criminalReport['admission']?></td>
             <td><?php echo ($criminalReport['orders'] > 0) ? "<a href='step2.php?type=criminal&purpose=orders'>".$criminalReport['orders']."</a>" : $criminalReport['orders']?></td>
             <td><?php echo ($criminalReport['hearing'] > 0) ? "<a href='step2.php?type=criminal&purpose=hearing'>".$criminalReport['hearing']."</a>" : $criminalReport['hearing']?></td>
         </tr>
+
+        <?php }
+        if (!empty($civilReport)) { ?>
+
+        <tr>
+            <td>Civil</td>
+            <td><?php echo ($civilReport['count'] > 0) ? "<a href='step2.php?type=civil'>".$civilReport['count']."</a>" : $civilReport['count']?></td>
+            <td><?php echo ($civilReport['admission'] > 0) ? "<a href='step2.php?type=civil&purpose=admission'>".$civilReport['admission']."</a>" : $civilReport['admission']?></td>
+            <td><?php echo ($civilReport['orders'] > 0) ? "<a href='step2.php?type=civil&purpose=orders'>".$civilReport['orders']."</a>" : $civilReport['orders']?></td>
+            <td><?php echo ($civilReport['hearing'] > 0) ? "<a href='step2.php?type=civil&purpose=hearing'>".$civilReport['hearing']."</a>" : $civilReport['hearing']?></td>
+        </tr>
+
+        <?php }
+        if (!empty($reports)) { ?>
+
+        <tr>
+            <td>Total</td>
+            <td><?php echo  $reports['count']?></td>
+            <td><?php echo  $reports['admission']?></td>
+            <td><?php echo  $reports['orders']?></td>
+            <td><?php echo  $reports['hearing']?></td>
+        </tr>
+        <?php } ?>
         </tbody>
     </table>
+
     <br><br>
-    <?php }
 
-    if (!empty($civilReport)) { ?>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Civil</th>
-                <th>Admission</th>
-                <th>Orders</th>
-                <th>Hearing</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><?php echo ($civilReport['count'] > 0) ? "<a href='step2.php?type=civil'>".$civilReport['count']."</a>" : $civilReport['count']?></td>
-                <td><?php echo ($civilReport['admission'] > 0) ? "<a href='step2.php?type=civil&purpose=admission'>".$civilReport['admission']."</a>" : $civilReport['admission']?></td>
-                <td><?php echo ($civilReport['orders'] > 0) ? "<a href='step2.php?type=civil&purpose=orders'>".$civilReport['orders']."</a>" : $civilReport['orders']?></td>
-                <td><?php echo ($civilReport['hearing'] > 0) ? "<a href='step2.php?type=civil&purpose=hearing'>".$civilReport['hearing']."</a>" : $civilReport['hearing']?></td>
-            </tr>
-            </tbody>
-        </table>
-        <br><br>
-    <?php }
+    <div class="col-sm-12">
+        <div class="col-sm-6">
+            <h3>Criminal Graph</h3>
+            <div id="criminalDiv" style="width: 480px; height: 380px;"></div>
+        </div>
+        <div class="col-sm-6">
+            <h3>Civil Graph</h3>
+            <div id="civilDiv" style="width: 480px; height: 380px;"></div>
+        </div>
+    </div>
 
-    if (!empty($reports)) { ?>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Total</th>
-                <th>Admission</th>
-                <th>Orders</th>
-                <th>Hearing</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><?php echo  $reports['count']?></td>
-                <td><?php echo  $reports['admission']?></td>
-                <td><?php echo  $reports['orders']?></td>
-                <td><?php echo  $reports['hearing']?></td>
-            </tr>
-            </tbody>
-        </table>
-        <br><br>
+
+
+
+    <script>
+        var data = [{
+            values: [ <?php echo $criminalReport['admission']?>, <?php echo $criminalReport['orders']?>, <?php echo $criminalReport['hearing']?>, <?php echo $criminalReport['count'] - ($criminalReport['admission']+$criminalReport['orders']+ $criminalReport['hearing']) ?>],
+            labels: ['Admission', 'Orders', 'Hearing', 'Others'],
+            type: 'pie'
+        }];
+        var data2 = [{
+            values: [ <?php echo $civilReport['admission']?>, <?php echo $civilReport['orders']?>, <?php echo $civilReport['hearing']?>, <?php echo $civilReport['count'] - ($civilReport['admission']+$civilReport['orders']+ $civilReport['hearing']) ?>],
+            labels: ['Admission', 'Orders', 'Hearing', 'Others'],
+            type: 'pie'
+        }];
+        console.log(data);
+        console.log(data2);
+        var layout = {
+            height: 380,
+            width: 480
+        };
+        Plotly.newPlot('criminalDiv', data, layout);
+        Plotly.newPlot('civilDiv', data2, layout);
+    </script>
+    <br><br>
 <?php }
 
 include "footer.php"; ?>

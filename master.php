@@ -18,6 +18,8 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/datatables.min.js"></script>
     <script src="js/report.js"></script>
+      <script src="js/plotly-latest.min.js"></script>
+      <script src="js/numeric.min.js"></script>
 
 
   </head>
@@ -27,6 +29,7 @@
           <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <a href="search.php" class="mt10 logo pull-left no-text-decoration">
+                      <a href="javascript:history.go(-1)"><img src="images/back.jpeg"></a>
                       <img src="images/logo.png" />
                   </a>
               </div>
