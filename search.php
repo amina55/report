@@ -34,7 +34,7 @@ $civilCases = $connection->query($civil);
                             <option value="full_data"> Full Data </option>
                             <option value="year"> Specific Year </option>
                             <option value="range"> Range </option>
-                            <option value="specific_status"> Specific Status </option>
+                            <option value="specific_status"> Case Status </option>
                         </select>
                     </div>
 
@@ -98,10 +98,10 @@ $civilCases = $connection->query($civil);
                 <br><br>
                 <div class="mt20 col-sm-12">
                     <div class="col-sm-4">
-                        <input placeholder="Order Year" class="form-control" type="number" name="order_year" min="1898" max="<?php echo $currentYear; ?>">
+                        <input placeholder="Case Year" class="form-control" type="number" name="order_year" min="1898" max="<?php echo $currentYear; ?>">
                     </div>
                     <div class="col-sm-4">
-                        <input placeholder="Order ID" class="form-control" type="number" name="order_id" min="0">
+                        <input placeholder="Case No." class="form-control" type="number" name="order_id" min="0">
                     </div>
                     <div class="col-sm-2">
                         <input class="btn btn-green" type="submit" value="Go">

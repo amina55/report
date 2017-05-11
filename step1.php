@@ -51,12 +51,12 @@ if (!$connection) {
                 $statement->execute();
                 $orderDetail = $statement->fetch();
                 if(empty($orderDetail)) {
-                    $message = "There is no record of this Order.";
+                    $message = "There is no record for this case.";
                 } else {
                     if(in_array($orderDetail['purpose_today'], [2,4,8])) {
                         header('Location:view-detail.php?id='.$orderDetail['cino']);
                     } else {
-                        $message = "This Order is not in admission, orders and hearing category.";
+                        $message = "This Case is not in admission, orders and hearing category.";
                     }
                 }
             }
