@@ -84,7 +84,7 @@ $civilCases = $connection->query($civil);
                     <div class="col-sm-4">
                        <select id="civil_case_types" name="civil_case_types" class="form-control">
                            <?php foreach ($civilCases as $civilCase) {
-                               echo "<option value='".$civilCase['case_type']."'>".$civilCase['type_name'].'='.$civilCase['case_type']."</option>";
+                               echo "<option value='".$civilCase['case_type']."'>".$civilCase['type_name']."</option>";
                            }?>
                        </select>
 

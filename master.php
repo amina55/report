@@ -28,7 +28,7 @@
       <div class="container-fluid">
           <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <a class="pull-left" href="javascript:history.go(-1)"><img src="images/back.jpeg"></a>
+                  <a class="pull-left mt20" href="javascript:history.go(-1)"><img src="images/back.jpeg"></a>
                   <a href="step1.php" class="mt10 logo pull-left no-text-decoration">
                       <img src="images/logo.png" />
                   </a>
